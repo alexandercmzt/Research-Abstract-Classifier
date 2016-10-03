@@ -14,7 +14,7 @@ class Model():
 		self.W = []
 		self.b = []
 		prev_dim = input_dim
-		for h in xrange(num_layers)
+		for h in xrange(num_layers):
 			self.W.append(tf.Variable(tf.truncated_normal([prev_dim, hidden_dim[h]])), name='W_{}'.format(h))
 			self.b.append(tf.Variable(tf.truncated_normal([hidden_dim[h]])), name='b_{}'.format(h))
 			prev_dim = hidden_dim[h]
