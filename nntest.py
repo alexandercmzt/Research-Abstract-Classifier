@@ -1,3 +1,4 @@
+import tensorflow as tf
 import numpy as np
 import nn
 
@@ -26,11 +27,11 @@ temp = np.zeros((y_train.shape[0], 4))
 temp[np.arange(y_train.shape[0]), y_train] = 1
 y_train = temp
 
-model = nn.Model(400, 4, [500,500], true, 0.1)
+model = nn.Model(400, 4, [500,500], True, 0.1)
 
-with tf.session() as sess:
+with tf.Session() as sess:
 	sess.run(tf.initialize_all_variables())
-
-	for i in xrange(100):
-		loss = model.step(sess, X_train, y_train, trainable=true)
-		print "Iteration {}  with loss {}".format(sess.run(model.stepcount), loss)
+	print len(sess.run(tf.trainable_variables()))
+	# for i in xrange(100):
+	# 	loss = model.step(sess, X_train, y_train, trainable=True)
+	# 	print "Iteration {}  with loss {}".format(sess.run(model.stepcount), loss)
