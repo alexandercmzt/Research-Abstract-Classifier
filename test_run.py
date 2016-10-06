@@ -13,8 +13,8 @@ import collections
 import numpy as np
 import csv
 
-X_train = joblib.load('saves/data/train_in.csv_feature_vectors.pkl')
-X_test = joblib.load('saves/data/test_in.csv_feature_vectors.pkl')
+X_train = joblib.load('saves/data/train_in.csv_feature_vectors_400.pkl')
+X_test = joblib.load('saves/data/test_in.csv_feature_vectors_400.pkl')
 y_train = joblib.load('saves/data/train_out.csv_y_vector.pkl')
 X_train = X_train.tolist()
 y_train = y_train.tolist()
@@ -36,15 +36,15 @@ def accuracy(gold, predict):
     acc = float(corr) / len(gold)
     print 'Accuracy %d / %d = %.4f' % (corr, len(gold), acc)
 
-clf = LogisticRegression()
-scores = cross_val_score(clf, X_train, y_train, cv=3)
-print("LOGREG Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
-clf = AdaBoostClassifier(base_estimator=LogisticRegression())
-scores = cross_val_score(clf, X_train, y_train, cv=3)
-print("AdaBoost (Log Reg) Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
-clf = svm.SVC(kernel="linear")
-scores = cross_val_score(clf, X_train, y_train, cv=3)
-print("SVM Accuracy (linear kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+# clf = LogisticRegression()
+# scores = cross_val_score(clf, X_train, y_train, cv=3)
+# print("LOGREG Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+# clf = AdaBoostClassifier(base_estimator=LogisticRegression())
+# scores = cross_val_score(clf, X_train, y_train, cv=3)
+# print("AdaBoost (Log Reg) Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+# clf = svm.SVC(kernel="linear")
+# scores = cross_val_score(clf, X_train, y_train, cv=3)
+# print("SVM Accuracy (linear kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
 # clf = AdaBoostClassifier()
 # scores = cross_val_score(clf, X_train, y_train, cv=3)
 # print("AdaBoost (Decision Trees) Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
@@ -68,8 +68,6 @@ print("SVM Accuracy (linear kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores
 # print("Bagging kNN Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
 
 
-
-
 # partition = -1*int(len(y_train)*(0.995))
 # clf = LogisticRegression()
 # clf.fit(X_train[:partition], y_train[:partition])
@@ -77,16 +75,14 @@ print("SVM Accuracy (linear kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores
 # gold = y_train[partition:]
 # accuracy(gold,predictions)
 
-
-# clf = LogisticRegression()
-# clf.fit(X_train,y_train)
-# predictions = clf.predict(X_test)
-# output = [['id', 'category']]
-# for i in xrange(len(predictions)):
-# 	output.append([i, predictions[i]])
-
-# with open("output1.csv", "wb") as f:
-#     writer = csv.writer(f)
-#     writer.writerows(output)
+clf = svm.SVC(kernel='linear')
+clf.fit(X_train,y_train)
+predictions = clf.predict(X_test)
+output = [['id', 'category']]
+for i in xrange(len(predictions)):
+	output.append([i, predictions[i]])
+with open("output_400_SVM.csv", "wb") as f:
+    writer = csv.writer(f)
+    writer.writerows(output)
 
 

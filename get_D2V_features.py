@@ -14,14 +14,16 @@ from gensim import utils
 from gensim.models import Doc2Vec
 from gensim.models.doc2vec import LabeledSentence
 
-if len(sys.argv) != 3:
-	print "Please use the path to the train.csv file as the first command line argument and the path to the test.csv file as the second command line argument."
+if len(sys.argv) != 4:
+	print "Please use the path to the train.csv file as the first command line argument and the path to the test.csv file as the second command line argument. As 3rd command line argument provide the vocab size."
+	exit()
 filename = sys.argv[1]
 test_filename = sys.argv[2]
+vocab_size = sys.argv[3]
 #If feature vectors are already on disk, load them
-if os.path.isfile('saves/data/' +'model_d2v'):
+if os.path.isfile('saves/data/' +'model_d2v_' + vocab_size):
 	print "Saved D2V model found, loading..."
-	model = Doc2Vec.load('saves/data/' +'model_d2v')
+	model = Doc2Vec.load('saves/data/' +'model_d2v_' + vocab_size)
 	data = joblib.load('saves/' + filename +'_lemmatized_features.pkl')
 	test_data = joblib.load('saves/' + test_filename +'_lemmatized_features.pkl')
 	"Done loading"
@@ -92,7 +94,7 @@ else:
 	print "LENGTH OF TEST DATA:" +str(len(test_data))
 	docss = data + test_data
 	sentences = LabeledLineSentence(docss)
-	model = Doc2Vec(size=400, window=10, min_count=5, workers=11,alpha=0.025, min_alpha=0.025)
+	model = Doc2Vec(size=int(vocab_size), window=10, min_count=5, workers=11,alpha=0.025, min_alpha=0.025)
 	print "Building vocabulary for D2V..."
 	model.build_vocab(sentences.to_array())
 	for epoch in range(10):
@@ -101,7 +103,7 @@ else:
 		model.min_alpha = model.alpha
 		model.train(sentences.sentences_perm())
 	print "Done training. Saving D2V model..."
-	model.save('saves/data/' +'model_d2v')
+	model.save('saves/data/' +'model_d2v_' + vocab_size)
 	print "D2V model saved."
 
 output_matrix = []
@@ -113,10 +115,10 @@ for j in xrange(len(data),len(data)+len(test_data)):
 
 print np.array(output_matrix).shape
 print np.array(test_output_matrix).shape
-joblib.dump(np.array(output_matrix), 'saves/' + filename +'_feature_vectors.pkl')
-joblib.dump(np.array(test_output_matrix), 'saves/' + test_filename +'_feature_vectors.pkl')
-print "Saved feature matrix to " + 'saves/' + filename +'_feature_vectors.pkl'
-print "Saved test feature matrix to " + 'saves/' + test_filename +'_feature_vectors.pkl'
+joblib.dump(np.array(output_matrix), 'saves/' + filename +'_feature_vectors_' + vocab_size + '.pkl')
+joblib.dump(np.array(test_output_matrix), 'saves/' + test_filename +'_feature_vectors_' + vocab_size + '.pkl')
+print "Saved feature matrix to " + 'saves/' + filename +'_feature_vectors_' + vocab_size + '.pkl'
+print "Saved test feature matrix to " + 'saves/' + test_filename +'_feature_vectors_' + vocab_size + '.pkl'
 
 
 
