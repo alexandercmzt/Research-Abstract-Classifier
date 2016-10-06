@@ -1,5 +1,5 @@
 from sklearn import svm
-from sklearn import linear_model
+from sklearn.linear_model import LogisticRegression
 from sklearn.neural_network import MLPClassifier
 from sklearn.externals import joblib
 from sklearn.model_selection import cross_val_score
@@ -36,46 +36,49 @@ def accuracy(gold, predict):
     acc = float(corr) / len(gold)
     print 'Accuracy %d / %d = %.4f' % (corr, len(gold), acc)
 
-clf = linear_model.LogisticRegression()
+clf = LogisticRegression()
 scores = cross_val_score(clf, X_train, y_train, cv=3)
 print("LOGREG Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+clf = AdaBoostClassifier(base_estimator=LogisticRegression())
+scores = cross_val_score(clf, X_train, y_train, cv=3)
+print("AdaBoost (Log Reg) Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
 clf = svm.SVC(kernel="linear")
 scores = cross_val_score(clf, X_train, y_train, cv=3)
 print("SVM Accuracy (linear kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
-clf = svm.SVC(kernel="sigmoid")
-scores = cross_val_score(clf, X_train, y_train, cv=3)
-print("SVM Accuracy (sigmoid kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
-clf = svm.SVC()
-scores = cross_val_score(clf, X_train, y_train, cv=3)
-print("SVM Accuracy (rbf kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
-clf = KNeighborsClassifier()
-scores = cross_val_score(clf, X_train, y_train, cv=3)
-print("kNN Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
-clf = BaggingClassifier(KNeighborsClassifier(),max_samples=0.5, max_features=0.5)
-scores = cross_val_score(clf, X_train, y_train, cv=3)
-print("Bagging kNN Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
-clf = RandomForestClassifier()
-scores = cross_val_score(clf, X_train, y_train, cv=3)
-print("Random Forests Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
-clf = ExtraTreesClassifier()
-scores = cross_val_score(clf, X_train, y_train, cv=3)
-print("Extremely Random Forests Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
-clf = AdaBoostClassifier()
-scores = cross_val_score(clf, X_train, y_train, cv=3)
-print("AdaBoost Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+# clf = AdaBoostClassifier()
+# scores = cross_val_score(clf, X_train, y_train, cv=3)
+# print("AdaBoost (Decision Trees) Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+# clf = svm.SVC(kernel="sigmoid")
+# scores = cross_val_score(clf, X_train, y_train, cv=3)
+# print("SVM Accuracy (sigmoid kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+# clf = svm.SVC()
+# scores = cross_val_score(clf, X_train, y_train, cv=3)
+# print("SVM Accuracy (rbf kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+# clf = RandomForestClassifier()
+# scores = cross_val_score(clf, X_train, y_train, cv=3)
+# print("Random Forests Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+# clf = ExtraTreesClassifier()
+# scores = cross_val_score(clf, X_train, y_train, cv=3)
+# print("Extremely Random Forests Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+# clf = KNeighborsClassifier()
+# scores = cross_val_score(clf, X_train, y_train, cv=3)
+# print("kNN Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+# clf = BaggingClassifier(KNeighborsClassifier(),max_samples=0.5, max_features=0.5)
+# scores = cross_val_score(clf, X_train, y_train, cv=3)
+# print("Bagging kNN Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
 
 
 
 
 # partition = -1*int(len(y_train)*(0.995))
-# clf = linear_model.LogisticRegression()
+# clf = LogisticRegression()
 # clf.fit(X_train[:partition], y_train[:partition])
 # predictions = clf.predict(X_train[partition:])
 # gold = y_train[partition:]
 # accuracy(gold,predictions)
 
 
-# clf = linear_model.LogisticRegression()
+# clf = LogisticRegression()
 # clf.fit(X_train,y_train)
 # predictions = clf.predict(X_test)
 # output = [['id', 'category']]
