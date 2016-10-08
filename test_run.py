@@ -59,13 +59,17 @@ def accuracy(gold, predict):
 
 def cross_validate(X_train, y_train, X_test):
 
-	clf = LogisticRegression()
-	scores = cross_val_score(clf, X_train, y_train, cv=3)
-	print("LOGREG Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
-
 	clf = svm.LinearSVC()
-	scores = cross_val_score(clf, X_train, y_train, cv=3)
-	print("SVM Accuracy (linear kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+	boundary = len(X_train)/2
+	clf.fit(X_train[:boundary], y_train[:boundary])
+	accuracy(y_train[boundary:], clf.predict(X_train[boundary:]))
+	# clf = LogisticRegression()
+	# scores = cross_val_score(clf, X_train, y_train, cv=3)
+	# print("LOGREG Accuracy: %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
+
+	# clf = svm.LinearSVC()
+	# scores = cross_val_score(clf, X_train, y_train, cv=3)
+	# print("SVM Accuracy (linear kernel): %0.8f (+/- %0.8f)" % (scores.mean(), scores.std() * 2))
 
 	# clf = AdaBoostClassifier(base_estimator=LogisticRegression())
 	# scores = cross_val_score(clf, X_train, y_train, cv=3)
@@ -107,7 +111,7 @@ def make_output(X_train, y_train, X_test):
 	output = [['id', 'category']]
 	for i in xrange(len(predictions)):
 		output.append([i, predictions[i]])
-	with open("output_40000.csv", "wb") as f:
+	with open("output_55800.csv", "wb") as f:
 	    writer = csv.writer(f)
 	    writer.writerows(output)
 
@@ -132,12 +136,12 @@ if __name__ == "__main__":
 	#compare('output_800_SVM.csv', 'output_400_SVM.csv')
 
 	# for d2v_num in ['0']:#,'200','400', '800']:
-	# 	for unigram_num in [50000, 75000, 100000, 150000]:
+	# 	for unigram_num in [55000, 60000, 65000]:
 	# 		print "------RUN FOR D2V[" + d2v_num + "] UNIGRAM[" + str(unigram_num) + "]------"
 	# 		X_train, y_train, X_test = prepare_features(d2v_num, unigram_num)
 	# 		cross_validate(X_train, y_train, X_test)
 
-	x,y,z = prepare_features('0', 40000)
+	x,y,z = prepare_features('0', 55800)
 	# cross_validate(x,y,z)
 	make_output(x,y,z)
 
