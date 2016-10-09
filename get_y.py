@@ -17,6 +17,7 @@ with open(filename, 'rU') as f:
 for i in xrange(len(data)):
 	data[i] = data[i][1]
 
+print np.array(data)
 print np.array(data).shape
 joblib.dump(np.array(data), 'saves/' + filename +'_y_vector.pkl')
 print "y vector saved."
