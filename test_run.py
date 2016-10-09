@@ -111,7 +111,7 @@ def make_output(X_train, y_train, X_test):
 	output = [['id', 'category']]
 	for i in xrange(len(predictions)):
 		output.append([i, predictions[i]])
-	with open("output_55800.csv", "wb") as f:
+	with open("output_20800.csv", "wb") as f:
 	    writer = csv.writer(f)
 	    writer.writerows(output)
 
@@ -141,7 +141,7 @@ if __name__ == "__main__":
 	# 		X_train, y_train, X_test = prepare_features(d2v_num, unigram_num)
 	# 		cross_validate(X_train, y_train, X_test)
 
-	x,y,z = prepare_features('0', 55800)
+	x,y,z = prepare_features('800', 20000)
 	# cross_validate(x,y,z)
 	make_output(x,y,z)
 
