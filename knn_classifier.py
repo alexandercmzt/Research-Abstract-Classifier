@@ -12,9 +12,6 @@ X_train = joblib.load('saves/data/train_in.csv_feature_vectors_800.pkl').tolist(
 X_test = joblib.load('saves/data/test_in.csv_feature_vectors_800.pkl').tolist()
 y_train = joblib.load('saves/data/train_out.csv_y_vector.pkl').tolist()
 
-label_to_class = {0 : 'stat', 1 : 'math', 2 : 'physics', 3 : 'cs', 4: 'category'}
-class_to_label = {'stat' : 0, 'math' : 1, 'physics' : 2, 'cs' : 3, 'category': 4}
-
 def accuracy(gold, predict):
     assert len(gold) == len(predict)
     corr = 0
@@ -25,7 +22,7 @@ def accuracy(gold, predict):
     print 'Accuracy %d / %d = %.4f' % (corr, len(gold), acc)
 
 class knn_classifier(object):
-	"""docstring for knn_classifier"""
+	""" Class that implements k nearest neighbor algorithm """
 	def __init__(self, numNeighbors):
 		self.numNeighbors = numNeighbors
 		self.label_to_class = {0 : 'stat', 1 : 'math', 2 : 'physics', 3 : 'cs', 4: 'category'}
@@ -36,33 +33,32 @@ class knn_classifier(object):
 		inputVector = np.asarray(inputVector)
 		distances = []
 		idx = 0
-		for vector in X_train:
+		for vector in X_train: # calculate distance between inputVector and every vector in the dataset
 			dist = np.linalg.norm(np.asarray(vector) - inputVector) # euclidian distance in np
 			
 			distances.append((dist, idx))
 			idx += 1
 		
-		distances = sorted(distances, key = lambda distance: distance[0])
+		distances = sorted(distances, key = lambda distance: distance[0]) # sort vectors in dataset by distance
 		res = distances[:self.numNeighbors]
 		neighbs = []
 		for aResult in res[1:]:
-			neighbs.append(class_to_label[y_train[aResult[1]]])
+			neighbs.append(self.class_to_label[y_train[aResult[1]]])
 
-		return label_to_class[mode(np.asarray(neighbs))[0][0]]
+		return self.label_to_class[mode(np.asarray(neighbs))[0][0]]
 
 numExamples = 300
-
 
 # our classifier
 tristan_knn = knn_classifier(3)
 predictions = []
 counter = 0
 for trainingExample in X_train[:numExamples]:
-	print 'Predicting example: ', counter, '/', numExamples
+	print 'Predicting example: %s/%i' % (counter, numExamples)
 	predictions.append(tristan_knn.predict(trainingExample))
 	counter += 1
 
-accuracy(y_train[:numExamples], predictions)
+print 'accuracy of our classifier is %d.' % accuracy(y_train[:numExamples], predictions)
 
 
 # sklearn comparison
@@ -72,11 +68,11 @@ neigh.fit(X_train, y_train)
 predictions = []
 counter = 0
 for trainingExample in X_train[:numExamples]:
-	print 'Predicting example: ', counter, '/', numExamples
+	print 'Predicting example: %s/%i' % (counter, numExamples)
 	predictions.append(neigh.predict([X_train[1]])[0])
 	counter += 1
 
-accuracy(y_train[:numExamples], predictions)
+print 'accuracy of the sklearn classifier is %d.' % accuracy(y_train[:numExamples], predictions)
 
 
 
