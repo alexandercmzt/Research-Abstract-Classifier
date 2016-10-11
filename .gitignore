@@ -1,0 +1,8 @@
+saves/data/model*
+saves/data/*lemma*
+saves/data/*vector*
+saves/data/Archive*
+saves/data
+saves/model/*
+*.zip
+*.pyc
