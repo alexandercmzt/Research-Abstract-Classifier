@@ -69,14 +69,14 @@ with tf.Session() as sess:
 			loss += np.sum(loss) / len(loss)
 		print "Iteration {} with loss {}".format(i, total_loss / num_bin)
 
-		if i % 10 == 0:
-			accuracy = []
-			for b in xrange(len(test_batched_input)):
-				pred = model.step(sess, test_batched_input[b])
-				pred = np.argmax(pred, axis=1)
-				acc = accuracy_score(test_batched_label[b], pred)
-				accuracy.append(acc)
-			print '### Iteration {} with ACCURACY: {} ###'.format(i, np.sum(accuracy)/len(accuracy))
+		#if i % 10 == 0:
+		accuracy = []
+		for b in xrange(len(test_batched_input)):
+			pred = model.step(sess, test_batched_input[b])
+			pred = np.argmax(pred, axis=1)
+			acc = accuracy_score(test_batched_label[b], pred)
+			accuracy.append(acc)
+		print '### Iteration {} with ACCURACY: {} ###'.format(i, np.sum(accuracy)/len(accuracy))
 
-			if args.save is not None:
-				model.save(sess, args.save)
+		if args.save is not None:
+			model.save(sess, args.save)

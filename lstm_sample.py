@@ -2,6 +2,7 @@ from __future__ import division
 
 
 from write_csv import write_csv
+from test_run import prepare_features
 
 import argparse
 
@@ -21,19 +22,21 @@ from sklearn.externals import joblib
 import numpy as np
 import lstm
 
-X_test = joblib.load('saves/data/400/test_in.csv_feature_vectors.pkl')
+_,_, X_test = prepare_features('800',args.unig)
+print "finished getting X_test"
 
-batched_input = np.split(X_test, X_test.shape[0])
+batched_input = np.split(X_test, 4)
 
 model = lstm.Model(input_dim=800+args.unig, output_dim=4, num_layers=args.layers, num_units=args.unig, trainable=True, batch_size=1, lstm=args.lstm)
 
 with tf.Session() as sess:
 	sess.run(tf.initialize_all_variables())
 	model.load(sess, args.load)
-
+	print "loaded model"
 	pred_list = []
 	for b in batched_input:
 		pred = model.step(sess, b)
 		pred = np.argmax(pred, axis=1)
 		pred_list.append(pred)
-	write_csv(args.out, pred_list)
+	print "about to write to csv"
+	write_csv(args.out, np.concatenate(pred_list, axis=0))
