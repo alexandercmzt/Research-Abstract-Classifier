@@ -5,3 +5,4 @@ saves/data/Archive*
 saves/data
 saves/model/*
 *.zip
+*.pyc
