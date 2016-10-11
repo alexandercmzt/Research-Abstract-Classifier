@@ -6,3 +6,4 @@ saves/data
 saves/model/*
 *.zip
 *.pyc
+*.pages
