@@ -32,18 +32,6 @@ def prepare_features(d2v_num, unigram_num):
 		X_train, X_test = get_unigrams('data/train_in.csv', 'data/test_in.csv', n=unigram_num)
 		print "Back in test run"
 		return X_train, y_train, X_test
-	# y_train = y_train.tolist()
-	# i=0
-	# while i < len(y_train):
-	# 	if y_train[i] == 'category':
-	# 		del X_train[i]
-	# 		del y_train[i]
-	# 	else:
-	# 		i += 1
-	# print "Bugged features removed"
-	# X_train = np.array(X_train)
-	# y_train = np.array(y_train)
-	# X_test = np.array(X_test)
 	print X_train.shape, X_test.shape, y_train.shape
 	return X_train, y_train, X_test
 
