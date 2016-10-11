@@ -6,3 +6,6 @@ saves/data
 saves/model/*
 *.zip
 *.pyc
+*.pages
+*.xlsx
+.DS_Store
