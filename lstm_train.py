@@ -20,7 +20,7 @@ parser.add_argument('--batch_size', type=int, default=50)
 parser.add_argument('--lstm', dest='lstm', action='store_true')
 parser.add_argument('--gru', dest='lstm', action='store_false')
 parser.set_defaults(lstm=False)
-args = parser.parse_arg()
+args = parser.parse_args()
 
 X_train,y_train,_ = prepare_features('800',args.unig)
 
