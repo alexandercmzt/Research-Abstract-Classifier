@@ -13,7 +13,8 @@ class Model():
 		return np.round(self.sigmoid(np.dot(x, self.w)))
 
 	def sigmoid(self, x):
-		return 1 / (1 + np.exp(-x))
+		# return 1 / (1 + np.exp(-x))
+		return x / (1 + np.abs(x))
 
 	def gradient(self, x, y):
 		# print x.shape, (y-self.forward(x)).shape, self.w.shape

@@ -3,8 +3,8 @@ import numpy as np
 
 class Model():
 	def __init__(self, input_dim, output_dim, hidden_dim, trainable, learning_rate=0.1, grad_clip = 5.0):
-		self.input_dim = 400
-		self.output_dim = 4
+		self.input_dim = input_dim
+		self.output_dim = output_dim
 
 		self.num_layers = len(hidden_dim)
 		self.hidden_dim = hidden_dim

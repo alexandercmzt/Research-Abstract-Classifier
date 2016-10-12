@@ -20,7 +20,6 @@ model = log_reg.Model(2, 0.1)
 
 for i in range(10):
 	model.step(X,Y)
-	print 'Iteration {} with error: {}'.format(i, model.error(X,Y))
 
 # Following decision boundary plotting code is a modified version of the first answer in: http://stackoverflow.com/questions/19054923/plot-decision-boundary-matplotlib
 # X - some data in 2dimensional np.array
@@ -36,6 +35,6 @@ plt.contourf(xx, yy, Z, cmap=plt.cm.Paired)
 plt.axis('off')
 # # Plot also the training points
 # plt.scatter(X[:, 0], X[:, 1], c=Y, cmap=plt.cm.Paired)
-plt.scatter(x1_samples[:,0],x1_samples[:,1], marker='+')
+plt.scatter(x1_samples[:,0],x1_samples[:,1], c= 'red', marker='o')
 plt.scatter(x2_samples[:,0],x2_samples[:,1], c= 'green', marker='o')
 plt.show()

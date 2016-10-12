@@ -1,13 +1,4 @@
 from __future__ import division
-
-import tensorflow as tf
-import numpy as np
-import lstm
-from test_run import prepare_features
-
-from sklearn.metrics import accuracy_score
-from sklearn.model_selection import train_test_split
-
 import argparse
 
 parser = argparse.ArgumentParser(description="LSTM/GRU trainer")
@@ -21,6 +12,15 @@ parser.add_argument('--lstm', dest='lstm', action='store_true')
 parser.add_argument('--gru', dest='lstm', action='store_false')
 parser.set_defaults(lstm=False)
 args = parser.parse_args()
+
+
+import tensorflow as tf
+import numpy as np
+import lstm
+from test_run import prepare_features
+
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import train_test_split
 
 X_train,y_train,_ = prepare_features('800',args.unig)
 
@@ -63,7 +63,7 @@ with tf.Session() as sess:
 	if args.load is not None:
 		model.load(sess, args.load)
 	for i in xrange(10000):
-		total_loss = 0
+		total_loss = 0.0
 		for b in xrange(len(batched_input)):
 			loss = model.step(sess, batched_input[b], batched_label[b], trainable=True)
 			loss += np.sum(loss) / len(loss)
