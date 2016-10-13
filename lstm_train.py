@@ -62,7 +62,7 @@ with tf.Session() as sess:
 	sess.run(tf.initialize_all_variables())
 	if args.load is not None:
 		model.load(sess, args.load)
-	for i in xrange(10000):
+	for i in xrange(3):
 		total_loss = 0.0
 		for b in xrange(len(batched_input)):
 			loss = model.step(sess, batched_input[b], batched_label[b], trainable=True)
